@@ -539,7 +539,7 @@ static void get_real_device(AssignedDevice *pci_dev, Error **errp)
              pci_dev->host.domain, pci_dev->host.bus,
              pci_dev->host.slot, pci_dev->host.function);
 
-    snprintf(name, sizeof(name), "%sconfig", dir);
+    snprintf(name, sizeof(name), "%.64sconfig", dir);
 
     if (pci_dev->configfd_name && *pci_dev->configfd_name) {
         dev->config_fd = monitor_fd_param(cur_mon, pci_dev->configfd_name,
@@ -582,7 +582,7 @@ again:
     memset(&pci_dev->dev.config[PCI_BASE_ADDRESS_0], 0, 24);
     memset(&pci_dev->dev.config[PCI_ROM_ADDRESS], 0, 4);
 
-    snprintf(name, sizeof(name), "%sresource", dir);
+    snprintf(name, sizeof(name), "%.64sresource", dir);
 
     f = fopen(name, "r");
     if (f == NULL) {
@@ -610,7 +610,7 @@ again:
         } else {
             flags &= ~IORESOURCE_PREFETCH;
         }
-        snprintf(name, sizeof(name), "%sresource%d", dir, r);
+        snprintf(name, sizeof(name), "%.64sresource%d", dir, r);
         fd = open(name, O_RDWR);
         if (fd == -1) {
             continue;
@@ -734,7 +734,7 @@ static char *assign_failed_examine(const AssignedDevice *dev)
             dev->host.domain, dev->host.bus, dev->host.slot,
             dev->host.function);
 
-    snprintf(name, sizeof(name), "%sdriver", dir);
+    snprintf(name, sizeof(name), "%.64sdriver", dir);
 
     r = readlink(name, driver, sizeof(driver));
     if ((r <= 0) || r >= sizeof(driver)) {

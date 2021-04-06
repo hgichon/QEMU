@@ -562,7 +562,7 @@ static void slirp_smb_cleanup(SlirpState *s)
     int ret;
 
     if (s->smb_dir[0] != '\0') {
-        snprintf(cmd, sizeof(cmd), "rm -rf %s", s->smb_dir);
+        snprintf(cmd, sizeof(cmd), "rm -rf %.64s", s->smb_dir);
         ret = system(cmd);
         if (ret == -1 || !WIFEXITED(ret)) {
             error_report("'%s' failed.", cmd);
@@ -606,7 +606,7 @@ static int slirp_smb(SlirpState* s, const char *exported_dir,
         s->smb_dir[0] = 0;
         return -1;
     }
-    snprintf(smb_conf, sizeof(smb_conf), "%s/%s", s->smb_dir, "smb.conf");
+    snprintf(smb_conf, sizeof(smb_conf), "%.64s/%.32s", s->smb_dir, "smb.conf");
 
     f = fopen(smb_conf, "w");
     if (!f) {
@@ -651,7 +651,7 @@ static int slirp_smb(SlirpState* s, const char *exported_dir,
             );
     fclose(f);
 
-    snprintf(smb_cmdline, sizeof(smb_cmdline), "%s -l %s -s %s",
+    snprintf(smb_cmdline, sizeof(smb_cmdline), "%s -l %.64s -s %.32s",
              CONFIG_SMBD_COMMAND, s->smb_dir, smb_conf);
 
     if (slirp_add_exec(s->slirp, 0, smb_cmdline, &vserver_addr, 139) < 0 ||

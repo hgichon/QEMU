@@ -315,7 +315,7 @@ static void blkverify_refresh_filename(BlockDriverState *bs, QDict *options)
         && s->test_file->bs->exact_filename[0])
     {
         snprintf(bs->exact_filename, sizeof(bs->exact_filename),
-                 "blkverify:%s:%s",
+                 "blkverify:%.2038s:%.2038s",
                  bs->file->bs->exact_filename,
                  s->test_file->bs->exact_filename);
     }
